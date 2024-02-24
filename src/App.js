@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { CodeEditor } from './editor';
 
-function App() {
+const App = ({
+  onSubmit
+}) => {
+
+  const [editorContent, setEditorContent] = useState({ channels: [], dependencies: [], variables: {} });
+
+  const onUpdateEditor = ({
+    channels,
+    dependencies,
+    variables
+  }) => {
+    const code = { channels, dependencies, variables };
+
+    if (!channels || channels.length === 0) {
+      code.channels = [];
+    }
+
+    if (!dependencies || dependencies.length === 0) {
+      code.dependencies = [];
+    }
+
+    if (!variables || Object.keys(variables).length === 0) {
+      code.variables = {};
+    }
+
+    setEditorContent(code);
+  };
+
+  const handleSubmit = () => {
+    const code = editorContent;
+    onSubmit(code);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CodeEditor
+        code={JSON.stringify(editorContent)}
+        onChangeEditor={onUpdateEditor}
+      />
+      <button onClick={handleSubmit}>
+        Submit
+      </button>
     </div>
   );
-}
+};
 
 export default App;
