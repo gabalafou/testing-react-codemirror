@@ -2,7 +2,6 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import App from "./App";
 
 it("should call onSubmit with updated values", async () => {
-  console.error = jest.fn();
   const mockOnSubmit = jest.fn();
 
   render(<App onSubmit={mockOnSubmit} />);
